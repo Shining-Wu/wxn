@@ -1,0 +1,1380 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教育管理系统</title>
+    <style>
+        /* 修正后的CSS */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: #34495e;
+        }
+
+        .content {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-right: 20px;
+        }
+
+        .sidebar h3 {
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin: 10px 0;
+        }
+
+        .sidebar a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .sidebar a.active {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .main-content {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+        }
+
+        button {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #34495e;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <div class="logo">教育管理系统</div>
+        <div class="nav-links">
+            <a href="#" onclick="showSection(event, 'dashboard')">首页</a>
+            <a href="#" onclick="showSection(event, 'profile')">个人中心</a>
+            <a href="#" onclick="logout()">退出</a>
+        </div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <div class="content">
+            <!-- 侧边栏 -->
+            <div class="sidebar">
+                <h3>功能菜单</h3>
+                <ul>
+                    <li><a href="#" class="active" onclick="showSection(event, 'dashboard')">最近作业</a></li>
+                    <li><a href="#" onclick="showSection(event, 'assignments')">作业管理</a></li>
+                    <li><a href="#" onclick="showSection(event, 'class-assignments')">班级作业</a></li>
+                    <li><a href="#" onclick="showSection(event, 'submissions')">作业提交</a></li>
+                    <li><a href="#" onclick="showSection(event, 'groups')">班级管理</a></li>
+                    <li><a href="#" onclick="showSection(event, 'resources')">资源中心</a></li>
+                    <li><a href="#" onclick="showSection(event, 'resource-types')">资源分类</a></li>
+                    <li><a href="#" onclick="showSection(event, 'scores')">成绩管理</a></li>
+                    <li><a href="#" onclick="showSection(event, 'comments')">评论系统</a></li>
+                    <li><a href="#" onclick="showSection(event, 'stats')">数据统计</a></li>
+                </ul>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="main-content">
+                <!-- 仪表盘 -->
+                <div id="dashboard" class="content-section">
+                    <h2>欢迎回来</h2>
+                    <div class="card">
+                        <h3>最近作业</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>作业名称</th>
+                                    <th>截止日期</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentAssignments"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 作业管理 -->
+                <div id="assignments" class="content-section" style="display: none;">
+                    <h2>普通作业管理</h2>
+                    <div class="card">
+                        <h3>创建新作业</h3>
+                        <form id="createAssignmentForm">
+                            <div class="form-group">
+                                <label for="assignmentTitle">作业标题</label>
+                                <input type="text" id="assignmentTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="assignmentDescription">作业描述</label>
+                                <textarea id="assignmentDescription" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="assignmentDeadline">截止日期</label>
+                                <input type="datetime-local" id="assignmentDeadline" required>
+                            </div>
+                            <input type="hidden" id="teacherId" value="1"> <!-- 实际应从登录信息获取 -->
+                            <button type="submit">创建作业</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h3>作业列表</h3>
+                        <table id="assignmentsTable">
+                            <thead>
+                                <tr>
+                                    <th>作业名称</th>
+                                    <th>截止日期</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 班级作业 -->
+                <div id="class-assignments" class="content-section" style="display: none;">
+                    <h2>班级作业管理</h2>
+                    <div class="card">
+                        <h3>创建班级作业</h3>
+                        <form id="createClassAssignmentForm">
+                            <div class="form-group">
+                                <label for="classAssignmentGroup">选择班级</label>
+                                <select id="classAssignmentGroup" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="classAssignmentTitle">作业标题</label>
+                                <input type="text" id="classAssignmentTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="classAssignmentDescription">作业描述</label>
+                                <textarea id="classAssignmentDescription" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="classAssignmentDeadline">截止日期</label>
+                                <input type="datetime-local" id="classAssignmentDeadline" required>
+                            </div>
+                            <input type="hidden" id="classAssignmentTeacherId" value="1">
+                            <button type="submit">创建班级作业</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h3>班级作业列表</h3>
+                        <table id="classAssignmentsTable">
+                            <thead>
+                                <tr>
+                                    <th>班级</th>
+                                    <th>作业名称</th>
+                                    <th>截止日期</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 作业提交 -->
+                <div id="submissions" class="content-section" style="display: none;">
+                    <h2>作业提交</h2>
+                    <div class="card">
+                        <h3>提交作业</h3>
+                        <form id="submitAssignmentForm">
+                            <div class="form-group">
+                                <label for="submissionAssignmentId">选择作业</label>
+                                <select id="submissionAssignmentId" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="submissionFile">上传文件</label>
+                                <input type="file" id="submissionFile" required>
+                            </div>
+                            <button type="submit">提交作业</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h3>提交记录</h3>
+                        <table id="submissionsTable">
+                            <thead>
+                                <tr>
+                                    <th>作业名称</th>
+                                    <th>提交时间</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 班级管理 -->
+                <div id="groups" class="content-section" style="display: none;">
+                    <h2>班级管理</h2>
+                    <div class="card">
+                        <h3>创建班级</h3>
+                        <form id="createGroupForm">
+                            <div class="form-group">
+                                <label for="groupName">班级名称</label>
+                                <input type="text" id="groupName" required>
+                            </div>
+                            <button type="submit">创建班级</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h3>班级列表</h3>
+                        <table id="groupsTable">
+                            <thead>
+                                <tr>
+                                    <th>班级名称</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 资源中心 -->
+                <div id="resources" class="content-section" style="display: none;">
+                    <h2>资源中心</h2>
+                    <div class="card">
+                        <h3>上传资源</h3>
+                        <form id="uploadResourceForm">
+                            <div class="form-group">
+                                <label for="resourceTitle">资源标题</label>
+                                <input type="text" id="resourceTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="resourceType">资源类型</label>
+                                <select id="resourceType" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="resourceFile">上传文件</label>
+                                <input type="file" id="resourceFile" required>
+                            </div>
+                            <button type="submit">上传资源</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h3>资源列表</h3>
+                        <table id="resourcesTable">
+                            <thead>
+                                <tr>
+                                    <th>资源标题</th>
+                                    <th>资源类型</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 资源分类 -->
+                <div id="resource-types" class="content-section" style="display: none;">
+                    <h2>资源分类</h2>
+                    <div class="card">
+                        <h3>创建资源分类</h3>
+                        <form id="createResourceTypeForm">
+                            <div class="form-group">
+                                <label for="resourceTypeName">分类名称</label>
+                                <input type="text" id="resourceTypeName" required>
+                            </div>
+                            <button type="submit">创建分类</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h3>分类列表</h3>
+                        <table id="resourceTypesTable">
+                            <thead>
+                                <tr>
+                                    <th>分类名称</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 成绩管理 -->
+                <div id="scores" class="content-section" style="display: none;">
+                    <h2>成绩管理</h2>
+                    <div class="card">
+                        <h3>录入成绩</h3>
+                        <form id="enterScoreForm">
+                            <div class="form-group">
+                                <label for="scoreAssignmentId">选择作业</label>
+                                <select id="scoreAssignmentId" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="scoreStudentId">选择学生</label>
+                                <select id="scoreStudentId" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="scoreValue">成绩</label>
+                                <input type="number" id="scoreValue" required>
+                            </div>
+                            <button type="submit">录入成绩</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h3>成绩列表</h3>
+                        <table id="scoresTable">
+                            <thead>
+                                <tr>
+                                    <th>作业名称</th>
+                                    <th>学生姓名</th>
+                                    <th>成绩</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 评论系统 -->
+                <div id="comments" class="content-section" style="display: none;">
+                    <h2>评论系统</h2>
+                    <div class="card">
+                        <h3>发表评论</h3>
+                        <form id="postCommentForm">
+                            <div class="form-group">
+                                <label for="commentAssignmentId">选择作业</label>
+                                <select id="commentAssignmentId" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="commentContent">评论内容</label>
+                                <textarea id="commentContent" required></textarea>
+                            </div>
+                            <button type="submit">发表评论</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h3>评论列表</h3>
+                        <table id="commentsTable">
+                            <thead>
+                                <tr>
+                                    <th>作业名称</th>
+                                    <th>评论内容</th>
+                                    <th>评论时间</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 数据统计 -->
+                <div id="stats" class="content-section" style="display: none;">
+                    <h2>数据统计</h2>
+                    <div class="card">
+                        <h3>作业完成情况统计</h3>
+                        <canvas id="assignmentStatsChart"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>成绩分布统计</h3>
+                        <canvas id="scoreStatsChart"></canvas>
+                    </div>
+                </div>
+                <!-- 个人中心页面结构 -->
+                <div id="profile" class="content-section" style="display: none;">
+                 <h2>个人中心</h2>
+                    <div class="card">
+                        <h3>个人信息</h3>
+                        <form id="profileForm">
+                            <div class="form-group">
+                                <label for="profileName">姓名</label>
+                                <input type="text" id="profileName" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="profileEmail">邮箱</label>
+                                <input type="email" id="profileEmail" readonly>
+                             </div>
+                            <button type="button" onclick="editProfile()">编辑信息</button>
+                            <button type="button" onclick="saveProfile()" style="display: none;">保存信息</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const API_BASE_URL = 'http://localhost:8080'; // 根据实际后端地址修改
+        let currentUser = { id: 1, role: 'teacher' }; // 模拟当前用户，实际应从登录获取
+
+        // 显示选中的内容区域
+        function showSection(event, sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+
+            document.querySelectorAll('.sidebar a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            loadSectionData(sectionId);
+        }
+
+        // 根据接口文档实现API调用
+        async function loadSectionData(sectionId) {
+            try {
+                switch (sectionId) {
+                    case 'assignments':
+                        await loadAssignments();
+                        break;
+                    case 'class-assignments':
+                        await loadClassAssignments();
+                        break;
+                    case 'submissions':
+                        await loadSubmissions();
+                        break;
+                    case 'groups':
+                        await loadGroups();
+                        break;
+                    case 'resources':
+                        await loadResources();
+                        break;
+                    case 'resource-types':
+                        await loadResourceTypes();
+                        break;
+                    case 'scores':
+                        await loadScores();
+                        break;
+                    case 'comments':
+                        await loadComments();
+                        break;
+                    case 'stats':
+                        await loadStats();
+                        break;
+                }
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                alert('加载数据失败: ' + error.message);
+            }
+        }
+
+        // 加载普通作业
+        async function loadAssignments() {
+            const response = await fetch(`${API_BASE_URL}/assignments`);
+            const assignments = await response.json();
+
+            const tableBody = document.querySelector('#assignmentsTable tbody');
+            tableBody.innerHTML = '';
+
+            assignments.forEach(assignment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${assignment.title}</td>
+                    <td>${formatDateTime(assignment.deadline)}</td>
+                    <td>
+                        <button onclick="viewAssignment(${assignment.id})">查看</button>
+                        ${currentUser.role === 'teacher' ?
+                          `<button onclick="deleteAssignment(${assignment.id})">删除</button>` : ''}
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // 加载班级作业
+        async function loadClassAssignments() {
+            // 先加载班级列表
+            const groupsResponse = await fetch(`${API_BASE_URL}/groups`);
+            const groups = await groupsResponse.json();
+
+            const groupSelect = document.getElementById('classAssignmentGroup');
+            groupSelect.innerHTML = '';
+            groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group.id;
+                option.textContent = group.groupName;
+                groupSelect.appendChild(option);
+            });
+
+            const classAssignmentsResponse = await fetch(`${API_BASE_URL}/class-assignments`);
+            const classAssignments = await classAssignmentsResponse.json();
+
+            const classAssignmentsTableBody = document.querySelector('#classAssignmentsTable tbody');
+            classAssignmentsTableBody.innerHTML = '';
+
+            classAssignments.forEach(classAssignment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${classAssignment.groupName}</td>
+                    <td>${classAssignment.title}</td>
+                    <td>${formatDateTime(classAssignment.deadline)}</td>
+                    <td>
+                        <button onclick="viewClassAssignment(${classAssignment.id})">查看</button>
+                        ${currentUser.role === 'teacher' ?
+                          `<button onclick="deleteClassAssignment(${classAssignment.id})">删除</button>` : ''}
+                    </td>
+                `;
+                classAssignmentsTableBody.appendChild(row);
+            });
+        }
+
+        // 加载作业提交
+        async function loadSubmissions() {
+            const response = await fetch(`${API_BASE_URL}/submissions`);
+            const submissions = await response.json();
+
+            const tableBody = document.querySelector('#submissionsTable tbody');
+            tableBody.innerHTML = '';
+
+            submissions.forEach(submission => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${submission.assignmentTitle}</td>
+                    <td>${formatDateTime(submission.submitTime)}</td>
+                    <td>${submission.status}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // 加载作业列表用于提交作业表单
+            const assignmentsResponse = await fetch(`${API_BASE_URL}/assignments`);
+            const assignments = await assignmentsResponse.json();
+
+            const assignmentSelect = document.getElementById('submissionAssignmentId');
+            assignmentSelect.innerHTML = '';
+            assignments.forEach(assignment => {
+                const option = document.createElement('option');
+                option.value = assignment.id;
+                option.textContent = assignment.title;
+                assignmentSelect.appendChild(option);
+            });
+        }
+
+        // 加载班级列表
+        async function loadGroups() {
+            const response = await fetch(`${API_BASE_URL}/groups`);
+            const groups = await response.json();
+
+            const tableBody = document.querySelector('#groupsTable tbody');
+            tableBody.innerHTML = '';
+
+            groups.forEach(group => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${group.groupName}</td>
+                    <td>
+                        <button onclick="deleteGroup(${group.id})">删除</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // 加载资源列表
+        async function loadResources() {
+            const response = await fetch(`${API_BASE_URL}/resources`);
+            const resources = await response.json();
+
+            const tableBody = document.querySelector('#resourcesTable tbody');
+            tableBody.innerHTML = '';
+
+            resources.forEach(resource => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${resource.title}</td>
+                    <td>${resource.typeName}</td>
+                    <td>
+                        <button onclick="deleteResource(${resource.id})">删除</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // 加载资源类型列表用于上传资源表单
+            const resourceTypesResponse = await fetch(`${API_BASE_URL}/resource-types`);
+            const resourceTypes = await resourceTypesResponse.json();
+
+            const resourceTypeSelect = document.getElementById('resourceType');
+            resourceTypeSelect.innerHTML = '';
+            resourceTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type.id;
+                option.textContent = type.name;
+                resourceTypeSelect.appendChild(option);
+            });
+        }
+
+        // 加载资源分类列表
+        async function loadResourceTypes() {
+            const response = await fetch(`${API_BASE_URL}/resource-types`);
+            const resourceTypes = await response.json();
+
+            const tableBody = document.querySelector('#resourceTypesTable tbody');
+            tableBody.innerHTML = '';
+
+            resourceTypes.forEach(type => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${type.name}</td>
+                    <td>
+                        <button onclick="deleteResourceType(${type.id})">删除</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // 加载成绩列表
+        async function loadScores() {
+            const response = await fetch(`${API_BASE_URL}/scores`);
+            const scores = await response.json();
+
+            const tableBody = document.querySelector('#scoresTable tbody');
+            tableBody.innerHTML = '';
+
+            scores.forEach(score => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${score.assignmentTitle}</td>
+                    <td>${score.studentName}</td>
+                    <td>${score.value}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // 加载作业列表用于录入成绩表单
+            const assignmentsResponse = await fetch(`${API_BASE_URL}/assignments`);
+            const assignments = await assignmentsResponse.json();
+
+            const assignmentSelect = document.getElementById('scoreAssignmentId');
+            assignmentSelect.innerHTML = '';
+            assignments.forEach(assignment => {
+                const option = document.createElement('option');
+                option.value = assignment.id;
+                option.textContent = assignment.title;
+                assignmentSelect.appendChild(option);
+            });
+
+            // 加载学生列表用于录入成绩表单
+            const studentsResponse = await fetch(`${API_BASE_URL}/students`);
+            const students = await studentsResponse.json();
+
+            const studentSelect = document.getElementById('scoreStudentId');
+            studentSelect.innerHTML = '';
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = student.name;
+                studentSelect.appendChild(option);
+            });
+        }
+
+        // 加载评论列表
+        async function loadComments() {
+            const response = await fetch(`${API_BASE_URL}/comments`);
+            const comments = await response.json();
+
+            const tableBody = document.querySelector('#commentsTable tbody');
+            tableBody.innerHTML = '';
+
+            comments.forEach(comment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${comment.assignmentTitle}</td>
+                    <td>${comment.content}</td>
+                    <td>${formatDateTime(comment.commentTime)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // 加载作业列表用于发表评论表单
+            const assignmentsResponse = await fetch(`${API_BASE_URL}/assignments`);
+            const assignments = await assignmentsResponse.json();
+
+            const assignmentSelect = document.getElementById('commentAssignmentId');
+            assignmentSelect.innerHTML = '';
+            assignments.forEach(assignment => {
+                const option = document.createElement('option');
+                option.value = assignment.id;
+                option.textContent = assignment.title;
+                assignmentSelect.appendChild(option);
+            });
+        }
+
+        // 加载数据统计
+        async function loadStats() {
+            const assignmentStatsResponse = await fetch(`${API_BASE_URL}/assignment-stats`);
+            const assignmentStats = await assignmentStatsResponse.json();
+
+            const scoreStatsResponse = await fetch(`${API_BASE_URL}/score-stats`);
+            const scoreStats = await scoreStatsResponse.json();
+
+            // 绘制作业完成情况统计图表
+            const assignmentStatsChart = document.getElementById('assignmentStatsChart').getContext('2d');
+            new Chart(assignmentStatsChart, {
+                type: 'bar',
+                data: {
+                    labels: assignmentStats.labels,
+                    datasets: [{
+                        label: '作业完成情况',
+                        data: assignmentStats.data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // 绘制成绩分布统计图表
+            const scoreStatsChart = document.getElementById('scoreStatsChart').getContext('2d');
+            new Chart(scoreStatsChart, {
+                type: 'pie',
+                data: {
+                    labels: scoreStats.labels,
+                    datasets: [{
+                        label: '成绩分布',
+                        data: scoreStats.data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 205, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                }
+            });
+        }
+
+        // 格式化日期时间
+        function formatDateTime(dateTime) {
+            const date = new Date(dateTime);
+            return date.toLocaleString();
+        }
+
+        // 退出登录
+        function logout() {
+            // 这里可以添加实际的退出登录逻辑，如清除本地存储的令牌等
+            alert('退出登录成功');
+            window.location.href = 'login.html'; // 跳转到登录页面
+        }
+
+        // 查看作业
+        async function viewAssignment(assignmentId) {
+            // 这里可以添加查看作业详情的逻辑
+            alert(`查看作业详情：ID ${assignmentId}`);
+        }
+
+        // 删除作业
+        async function deleteAssignment(assignmentId) {
+            if (confirm('确定要删除该作业吗？')) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/assignments/${assignmentId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        alert('作业删除成功');
+                        await loadAssignments();
+                    } else {
+                        alert('作业删除失败');
+                    }
+                } catch (error) {
+                    console.error('删除作业失败:', error);
+                    alert('删除作业失败: ' + error.message);
+                }
+            }
+        }
+
+        // 查看班级作业
+        async function viewClassAssignment(classAssignmentId) {
+            // 这里可以添加查看班级作业详情的逻辑
+            alert(`查看班级作业详情：ID ${classAssignmentId}`);
+        }
+
+        // 删除班级作业
+        async function deleteClassAssignment(classAssignmentId) {
+            if (confirm('确定要删除该班级作业吗？')) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/class-assignments/${classAssignmentId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        alert('班级作业删除成功');
+                        await loadClassAssignments();
+                    } else {
+                        alert('班级作业删除失败');
+                    }
+                } catch (error) {
+                    console.error('删除班级作业失败:', error);
+                    alert('删除班级作业失败: ' + error.message);
+                }
+            }
+        }
+
+        // 提交作业
+        async function submitAssignment(event) {
+            event.preventDefault();
+            const assignmentId = document.getElementById('submissionAssignmentId').value;
+            const file = document.getElementById('submissionFile').files[0];
+
+            const formData = new FormData();
+            formData.append('assignmentId', assignmentId);
+            formData.append('file', file);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/submissions`, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    alert('作业提交成功');
+                    await loadSubmissions();
+                } else {
+                    alert('作业提交失败');
+                }
+            } catch (error) {
+                console.error('作业提交失败:', error);
+                alert('作业提交失败: ' + error.message);
+            }
+        }
+      // 加载评论列表
+      async function loadComments() {
+            const response = await fetch(`${API_BASE_URL}/comments`);
+            const comments = await response.json();
+
+            const tableBody = document.querySelector('#commentsTable tbody');
+            tableBody.innerHTML = '';
+
+            comments.forEach(comment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${comment.assignmentTitle}</td>
+                    <td>${comment.content}</td>
+                    <td>${formatDateTime(comment.commentTime)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // 加载作业列表用于发表评论表单
+            const assignmentsResponse = await fetch(`${API_BASE_URL}/assignments`);
+            const assignments = await assignmentsResponse.json();
+
+            const assignmentSelect = document.getElementById('commentAssignmentId');
+            assignmentSelect.innerHTML = '';
+            assignments.forEach(assignment => {
+                const option = document.createElement('option');
+                option.value = assignment.id;
+                option.textContent = assignment.title;
+                assignmentSelect.appendChild(option);
+            });
+        }
+
+        // 加载数据统计
+        async function loadStats() {
+            // 实现逻辑
+        }
+
+        // 格式化日期时间
+        function formatDateTime(dateTime) {
+            const date = new Date(dateTime);
+            return date.toLocaleString();
+        }
+
+        // 退出登录
+        function logout() {
+            // 发送退出登录请求到后端接口
+            fetch('/api/logout', {
+                method: 'POST'
+            })
+           .then(response => response.json())
+           .then(result => {
+                if (result.success) {
+                    // 跳转到登录页面
+                    window.location.href = '/login';
+                } else {
+                    alert('退出登录失败：' + result.message);
+                }
+            })
+           .catch(error => {
+                console.error('请求出错：', error);
+                alert('请求出错，请稍后重试');
+            });
+        }
+
+        // 查看作业
+        async function viewAssignment(assignmentId) {
+            // 这里可以添加查看作业详情的逻辑
+            alert(`查看作业详情：ID ${assignmentId}`);
+        }
+
+        // 删除作业
+        async function deleteAssignment(assignmentId) {
+            if (confirm('确定要删除该作业吗？')) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/assignments/${assignmentId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        alert('作业删除成功');
+                        await loadAssignments();
+                    } else {
+                        alert('作业删除失败');
+                    }
+                } catch (error) {
+                    console.error('删除作业失败:', error);
+                    alert('删除作业失败: ' + error.message);
+                }
+            }
+        }
+
+        // 查看班级作业
+        async function viewClassAssignment(classAssignmentId) {
+            // 这里可以添加查看班级作业详情的逻辑
+            alert(`查看班级作业详情：ID ${classAssignmentId}`);
+        }
+
+        // 删除班级作业
+        async function deleteClassAssignment(classAssignmentId) {
+            if (confirm('确定要删除该班级作业吗？')) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/class-assignments/${classAssignmentId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        alert('班级作业删除成功');
+                        await loadClassAssignments();
+                    } else {
+                        alert('班级作业删除失败');
+                    }
+                } catch (error) {
+                    console.error('删除班级作业失败:', error);
+                    alert('删除班级作业失败: ' + error.message);
+                }
+            }
+        }
+
+        // 提交作业
+        async function submitAssignment(event) {
+            event.preventDefault();
+            const assignmentId = document.getElementById('submissionAssignmentId').value;
+            const file = document.getElementById('submissionFile').files[0];
+
+            const formData = new FormData();
+            formData.append('assignmentId', assignmentId);
+            formData.append('file', file);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/submissions`, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    alert('作业提交成功');
+                    await loadSubmissions();
+                } else {
+                    // 处理错误
+                }
+            } catch (error) {
+                console.error('提交作业失败:', error);
+                alert('提交作业失败: ' + error.message);
+            }
+        }
+
+        // 显示指定的内容区域
+        function showSection(event, sectionId) {
+            event.preventDefault();
+            // 移除所有侧边栏链接的 active 类
+            const sidebarLinks = document.querySelectorAll('.sidebar a');
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            // 为当前点击的链接添加 active 类
+            event.target.classList.add('active');
+            // 隐藏所有内容区域
+            const contentSections = document.querySelectorAll('.content-section');
+            contentSections.forEach(section => {
+                section.style.display = 'none';
+            });
+            // 显示指定的内容区域
+            const targetSection = document.getElementById(sectionId);
+            targetSection.style.display = 'block';
+        }
+
+        // 处理创建作业表单的提交
+        const createAssignmentForm = document.getElementById('createAssignmentForm');
+        if (createAssignmentForm) {
+            createAssignmentForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const assignmentTitle = document.getElementById('assignmentTitle').value;
+                const assignmentDescription = document.getElementById('assignmentDescription').value;
+                const assignmentDeadline = document.getElementById('assignmentDeadline').value;
+                const teacherId = document.getElementById('teacherId').value;
+
+                // 构造要发送的数据
+                const data = {
+                    title: assignmentTitle,
+                    description: assignmentDescription,
+                    deadline: assignmentDeadline,
+                    teacherId: teacherId
+                };
+
+                // 发送 POST 请求到后端接口
+                fetch('/api/createAssignment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+               .then(response => response.json())
+               .then(result => {
+                    if (result.success) {
+                        alert('作业创建成功');
+                        // 清空表单
+                        createAssignmentForm.reset();
+                    } else {
+                        alert('作业创建失败：' + result.message);
+                    }
+                })
+               .catch(error => {
+                    console.error('请求出错：', error);
+                    alert('请求出错，请稍后重试');
+                });
+            });
+        }
+
+        // 处理退出登录
+        function logout() {
+            // 发送退出登录请求到后端接口
+            fetch('/api/logout', {
+                method: 'POST'
+            })
+           .then(response => response.json())
+           .then(result => {
+                if (result.success) {
+                    // 跳转到登录页面
+                    window.location.href = '/login';
+                } else {
+                    alert('退出登录失败：' + result.message);
+                }
+            })
+           .catch(error => {
+                console.error('请求出错：', error);
+                alert('请求出错，请稍后重试');
+            });
+        }
+
+        // 发表评论
+        const commentForm = document.getElementById('commentForm');
+        if (commentForm) {
+            commentForm.addEventListener('submit', async function (event) {
+                event.preventDefault();
+                const commentContent = document.getElementById('commentContent').value;
+                const commentAssignmentId = document.getElementById('commentAssignmentId').value;
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/comments`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            assignmentId: commentAssignmentId,
+                            content: commentContent
+                        })
+                    });
+                    if (response.ok) {
+                        alert('评论发表成功');
+                        await loadComments();
+                        // 清空表单
+                        document.getElementById('commentContent').value = '';
+                    } else {
+                        const errorData = await response.json();
+                        alert(`评论发表失败: ${errorData.message || '未知错误'}`);
+                    }
+                } catch (error) {
+                    console.error('发表评论时出现网络错误:', error);
+                    alert('发表评论时出现网络错误，请稍后重试');
+                }
+            });
+        }
+
+        async function loadStats() {
+    try {
+        const assignmentStatsResponse = await fetch(`${API_BASE_URL}/assignment-stats`);
+        const assignmentStats = await assignmentStatsResponse.json();
+
+        const scoreStatsResponse = await fetch(`${API_BASE_URL}/score-stats`);
+        const scoreStats = await scoreStatsResponse.json();
+
+        // 绘制作业完成情况统计图表
+        const assignmentStatsChart = document.getElementById('assignmentStatsChart').getContext('2d');
+        new Chart(assignmentStatsChart, {
+            type: 'bar',
+            data: {
+                labels: assignmentStats.labels,
+                datasets: [{
+                    label: '作业完成情况',
+                    data: assignmentStats.data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 绘制成绩分布统计图表
+        const scoreStatsChart = document.getElementById('scoreStatsChart').getContext('2d');
+        new Chart(scoreStatsChart, {
+            type: 'pie',
+            data: {
+                labels: scoreStats.labels,
+                datasets: [{
+                    label: '成绩分布',
+                    data: scoreStats.data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 205, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {}
+        });
+    } catch (error) {
+        console.error('加载数据统计失败:', error);
+        alert('加载数据统计失败: ' + error.message);
+    }
+}
+// 加载个人信息
+async function loadProfile() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/profile`);
+        const profile = await response.json();
+
+        document.getElementById('profileName').value = profile.name;
+        document.getElementById('profileEmail').value = profile.email;
+    } catch (error) {
+        console.error('加载个人信息失败:', error);
+        alert('加载个人信息失败: ' + error.message);
+    }
+}
+
+// 编辑个人信息
+function editProfile() {
+    document.getElementById('profileName').readOnly = false;
+    document.getElementById('profileEmail').readOnly = false;
+    document.querySelector('button[onclick="editProfile()"]').style.display = 'none';
+    document.querySelector('button[onclick="saveProfile()"]').style.display = 'inline-block';
+}
+
+// 保存个人信息
+async function saveProfile() {
+    const name = document.getElementById('profileName').value;
+    const email = document.getElementById('profileEmail').value;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/profile`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email
+            })
+        });
+        if (response.ok) {
+            alert('个人信息保存成功');
+            document.getElementById('profileName').readOnly = true;
+            document.getElementById('profileEmail').readOnly = true;
+            document.querySelector('button[onclick="editProfile()"]').style.display = 'inline-block';
+            document.querySelector('button[onclick="saveProfile()"]').style.display = 'none';
+        } else {
+            const errorData = await response.json();
+            alert(`个人信息保存失败: ${errorData.message || '未知错误'}`);
+        }
+    } catch (error) {
+        console.error('保存个人信息失败:', error);
+        alert('保存个人信息失败: ' + error.message);
+    }
+}
+</script>
